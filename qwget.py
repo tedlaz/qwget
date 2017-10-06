@@ -9,6 +9,7 @@ from PyQt5 import QtWebKitWidgets as Qwkit
 
 
 rex = re.compile("\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.*?saved")
+INIT_URL = "https://alexandria-library.space/files/"
 
 
 class Fwget(Qw.QDialog):
@@ -26,7 +27,7 @@ class Fwget(Qw.QDialog):
         # Webkit
         self.web = Qwkit.QWebView(self)
         url = self.settings.value("save_url",
-                                  defaultValue="https://alexandria-library.space/files/")
+                                  defaultValue=INIT_URL)
         self.web.setUrl(Qc.QUrl(url))
         vlayout.addWidget(self.web)
         sp1 = Qw.QSpacerItem(20, 10, Qw.QSizePolicy.Minimum,
@@ -79,8 +80,11 @@ class Fwget(Qw.QDialog):
             self.settings.setValue("save_path", path)
 
     def open_run_window(self):
-        runwindow = RunWindow(self.wget_param(), self)
-        runwindow.exec_()
+        if self.save_path.text():
+            runwindow = RunWindow(self.wget_param(), self)
+            runwindow.exec_()
+        else:
+            Qw.QMessageBox.critical(self, 'Critical', 'Empty save path')
 
     def wget_param(self):
         url = self.url.text()
