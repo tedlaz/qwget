@@ -27,7 +27,7 @@ class Fwget(Qw.QDialog):
         # Webkit
         self.web = Qwkit.QWebView(self)
         url = self.settings.value("save_url",
-                                  defaultValue="http://users.otenet.gr/~o6gnvw")
+                                  defaultValue="https://alexandria-library.space/files/")
         self.web.setUrl(Qc.QUrl(url))
         vlayout.addWidget(self.web)
         sp1 = Qw.QSpacerItem(20, 10, Qw.QSizePolicy.Minimum,
@@ -155,7 +155,7 @@ class RunWindow(Qw.QDialog):
 
 if __name__ == '__main__':
     app = Qw.QApplication(sys.argv)
-    app.setWindowIcon(Qg.QIcon('/home/tedlaz/pyted/pyqt_templates/qwget.png'))
+    app.setWindowIcon(Qg.QIcon('qwget.png'))
     app.setOrganizationName("tedlaz")
     app.setOrganizationDomain("tedlaz")
     app.setApplicationName("qwget")
