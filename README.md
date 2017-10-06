@@ -1,6 +1,8 @@
 # qwget
 pyqt5 gui for wget
 
+When you copy a url qwget opens it.
+
 # Requirements
 wget
 
