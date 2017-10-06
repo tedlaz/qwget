@@ -6,9 +6,6 @@ from PyQt5 import QtCore as Qc
 from PyQt5 import QtGui as Qg
 from PyQt5 import QtWidgets as Qw
 from PyQt5 import QtWebKitWidgets as Qwkit
-
-
-rex = re.compile("\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.*?saved")
 INIT_URL = "https://alexandria-library.space/files/"
 
 
@@ -131,6 +128,7 @@ class RunWindow(Qw.QDialog):
         self.button.clicked.connect(self.accept)
         self.process.started.connect(lambda: self.button.setEnabled(False))
         self.process.finished.connect(lambda: self.button.setEnabled(True))
+        self.rex = re.compile("\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.*?saved")
         self.call_program()
 
     def call_program(self):
@@ -143,7 +141,7 @@ class RunWindow(Qw.QDialog):
     def data_ready(self):
         txt = self.process.readAllStandardOutput().data().decode('utf-8')
         foun = []
-        foun = rex.findall(txt)
+        foun = self.rex.findall(txt)
         if foun:
             if ".tmp.html’ saved" not in foun[0]:
                 cursor = self.out.textCursor()
