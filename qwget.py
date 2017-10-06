@@ -11,7 +11,6 @@ from PyQt5 import QtWebKitWidgets as Qwkit
 rex = re.compile("\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.*?saved")
 
 
-
 class Fwget(Qw.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
