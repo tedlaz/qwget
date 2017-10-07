@@ -8,6 +8,7 @@ from PyQt5 import QtWidgets as Qw
 # from PyQt5 import QtWebKitWidgets as Qwkit
 from PyQt5 import QtWebEngineWidgets as Qwkit
 INIT_URL = "https://alexandria-library.space/files/"
+CDIR = os.path.dirname(os.path.realpath(__file__))
 
 
 class Fwget(Qw.QDialog):
@@ -18,6 +19,7 @@ class Fwget(Qw.QDialog):
         url_layout = Qw.QHBoxLayout()
         self.url = Qw.QLineEdit(self)
         self.burl = Qw.QToolButton(self)
+        self.burl.setToolTip('Reload')
         self.burl.setArrowType(Qc.Qt.DownArrow)
         url_layout.addWidget(self.url)
         url_layout.addWidget(self.burl)
@@ -42,6 +44,7 @@ class Fwget(Qw.QDialog):
         path_layout.addWidget(self.save_path)
         self.bpath = Qw.QToolButton(self)
         self.bpath.setText('...')
+        self.bpath.setToolTip('Set save path')
         path_layout.addWidget(self.bpath)
         ext_layout = Qw.QHBoxLayout()
         vlayout.addLayout(ext_layout)
@@ -51,6 +54,9 @@ class Fwget(Qw.QDialog):
         self.extensions.setText(ext)
         self.extensions.setToolTip('Comma separated file extensions')
         ext_layout.addWidget(self.extensions)
+        self.bsaveext = Qw.QPushButton('set as default', self)
+        self.bsaveext.setFocusPolicy(Qc.Qt.NoFocus)
+        ext_layout.addWidget(self.bsaveext)
         button_layout = Qw.QHBoxLayout()
         vlayout.addLayout(button_layout)
         sp2 = Qw.QSpacerItem(40, 20, Qw.QSizePolicy.Expanding,
@@ -60,11 +66,17 @@ class Fwget(Qw.QDialog):
         self.bexec.setFocusPolicy(Qc.Qt.NoFocus)
         button_layout.addWidget(self.bexec)
         # Connections
+        self.url.returnPressed.connect(self.update_web)
+        self.bsaveext.clicked.connect(self.save_extensions)
         self.burl.clicked.connect(self.update_web)
         self.bpath.clicked.connect(self.update_path)
         self.bexec.clicked.connect(self.open_run_window)
         self.web.urlChanged.connect(self.update_url)
-        Qw.QApplication.clipboard().dataChanged.connect(self.clip_changed)
+        # Qw.QApplication.clipboard().dataChanged.connect(self.clip_changed)
+
+    def save_extensions(self):
+        self.settings.setValue("ext", self.extensions.text())
+        Qw.QMessageBox.information(self, 'Info', 'Extensions saved')
 
     def clip_changed(self):
         text = Qw.QApplication.clipboard().text()
@@ -159,7 +171,7 @@ class RunWindow(Qw.QDialog):
 
 if __name__ == '__main__':
     app = Qw.QApplication(sys.argv)
-    app.setWindowIcon(Qg.QIcon('qwget.png'))
+    app.setWindowIcon(Qg.QIcon(os.path.join(CDIR, 'qwget.png')))
     app.setOrganizationName("tedlaz")
     app.setOrganizationDomain("tedlaz")
     app.setApplicationName("qwget")
