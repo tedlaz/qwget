@@ -5,7 +5,8 @@ import subprocess
 from PyQt5 import QtCore as Qc
 from PyQt5 import QtGui as Qg
 from PyQt5 import QtWidgets as Qw
-from PyQt5 import QtWebKitWidgets as Qwkit
+# from PyQt5 import QtWebKitWidgets as Qwkit
+from PyQt5 import QtWebEngineWidgets as Qwkit
 INIT_URL = "https://alexandria-library.space/files/"
 
 
@@ -22,7 +23,8 @@ class Fwget(Qw.QDialog):
         url_layout.addWidget(self.burl)
         vlayout.addLayout(url_layout)
         # Webkit
-        self.web = Qwkit.QWebView(self)
+        # self.web = Qwkit.QWebView(self)
+        self.web = Qwkit.QWebEngineView(self)
         url = self.settings.value("save_url",
                                   defaultValue=INIT_URL)
         self.web.setUrl(Qc.QUrl(url))
