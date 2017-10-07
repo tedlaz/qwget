@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import sys
 import os
 import re
@@ -9,11 +10,13 @@ from PyQt5 import QtWidgets as Qw
 from PyQt5 import QtWebEngineWidgets as Qwkit
 INIT_URL = "https://alexandria-library.space/files/"
 CDIR = os.path.dirname(os.path.realpath(__file__))
+VERSION='0.5'
 
 
 class Fwget(Qw.QDialog):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.setWindowTitle('qwget (version : %s)' % VERSION)
         self.settings = Qc.QSettings()
         vlayout = Qw.QVBoxLayout(self)
         url_layout = Qw.QHBoxLayout()
