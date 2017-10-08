@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets as Qw
 from PyQt5 import QtWebEngineWidgets as Qwkit
 INIT_URL = "https://alexandria-library.space/files/"
 CDIR = os.path.dirname(os.path.realpath(__file__))
-VERSION='0.5'
+VERSION='0.6'
 
 
 class Fwget(Qw.QDialog):
@@ -18,6 +18,7 @@ class Fwget(Qw.QDialog):
         super().__init__(parent)
         self.setWindowTitle('qwget (version : %s)' % VERSION)
         self.settings = Qc.QSettings()
+        self.clipboard = ''
         vlayout = Qw.QVBoxLayout(self)
         url_layout = Qw.QHBoxLayout()
         self.url = Qw.QLineEdit(self)
@@ -75,7 +76,7 @@ class Fwget(Qw.QDialog):
         self.bpath.clicked.connect(self.update_path)
         self.bexec.clicked.connect(self.open_run_window)
         self.web.urlChanged.connect(self.update_url)
-        # Qw.QApplication.clipboard().dataChanged.connect(self.clip_changed)
+        Qw.QApplication.clipboard().dataChanged.connect(self.clip_changed)
 
     def save_extensions(self):
         self.settings.setValue("ext", self.extensions.text())
@@ -83,8 +84,21 @@ class Fwget(Qw.QDialog):
 
     def clip_changed(self):
         text = Qw.QApplication.clipboard().text()
-        self.url.setText(text)
-        self.update_web()
+        if text.startswith('https://') or text.startswith('http://'):
+            pass
+        else:
+            return
+        if self.clipboard == text:
+            return
+        self.clipboard = text
+        rpl = Qw.QMessageBox.question(self, 'Copy to clipboard detected',
+                                      'Do you want to visit: %s' % text,
+                                      Qw.QMessageBox.Yes | Qw.QMessageBox.No)
+        if rpl == Qw.QMessageBox.Yes:
+            self.url.setText(text)
+            self.update_web()
+            self.clipboard = ''
+
 
     def update_path(self):
         old = self.save_path.text()
