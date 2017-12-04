@@ -2,15 +2,13 @@
 import sys
 import os
 import re
-import subprocess
 from PyQt5 import QtCore as Qc
 from PyQt5 import QtGui as Qg
 from PyQt5 import QtWidgets as Qw
-# from PyQt5 import QtWebKitWidgets as Qwkit
 from PyQt5 import QtWebEngineWidgets as Qwkit
 INIT_URL = "https://alexandria-library.space/files/"
 CDIR = os.path.dirname(os.path.realpath(__file__))
-VERSION='0.6'
+VERSION = '0.6'
 
 
 class Fwget(Qw.QDialog):
@@ -186,7 +184,7 @@ class RunWindow(Qw.QDialog):
             self.progressBar.setRange(0, 1)
 
 
-if __name__ == '__main__':
+def main():
     app = Qw.QApplication(sys.argv)
     app.setWindowIcon(Qg.QIcon(os.path.join(CDIR, 'qwget.png')))
     app.setOrganizationName("tedlaz")
@@ -196,3 +194,7 @@ if __name__ == '__main__':
     ui.show()
     appex = app.exec_()
     sys.exit(appex)
+
+
+if __name__ == '__main__':
+    main()
